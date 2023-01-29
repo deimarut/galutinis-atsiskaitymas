@@ -1,11 +1,15 @@
+const cors = require('cors');
 const express = require('express');
 const mysql = require('mysql2');
 
 const app = express();
 
+app.use(cors());
+app.use(express.json());
+
 const mysqlConfig = {
-    host: '127.0.0.1', 
-    user: 'root', 
+    host: '127.0.0.1',
+    user: 'root',
     password: 'Programavimas2022', 
     database: 'events_organizer',
     port: 3306
@@ -13,5 +17,12 @@ const mysqlConfig = {
 
 const connection = mysql.createConnection(mysqlConfig);
 
-const PORT = 8000;
-app.listen(PORT, () => console.log(`Express server is running on PORT:${PORT}`));
+app.get('/attendees/:userId', (req, res) => {
+    const { userId } = req.params;
+    connection.execute('SELECT * FROM attendees WHERE userId=?', [userId], (err, attendees) => {
+        res.send(attendees);
+    })
+});
+
+const PORT = 8080;
+app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));

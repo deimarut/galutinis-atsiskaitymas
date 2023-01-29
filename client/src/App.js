@@ -1,12 +1,11 @@
-import { Route, Routes } from "react-router";
+import styled from 'styled-components';
+import { Attendees } from './pages/Attendees/Attendees';
 
 function App() {
+
   return (
     <div>
-      <Routes>
-        <Route path="/" element={<div>Home</div>}/>
-        <Route path="/attendees" element={<div>Attendees</div>} />
-      </Routes>
+      <Attendees />
     </div>
   );
 }
