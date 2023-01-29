@@ -1,6 +1,7 @@
 const cors = require('cors');
 const express = require('express');
 const mysql = require('mysql2');
+const { reset } = require('nodemon');
 
 const app = express();
 
@@ -17,11 +18,11 @@ const mysqlConfig = {
 
 const connection = mysql.createConnection(mysqlConfig);
 
-app.get('/attendees/:userId', (req, res) => {
-    const { userId } = req.params;
+app.get('/attendees', (req, res) => {
+    const { userId } = req.query;
     connection.execute('SELECT * FROM attendees WHERE userId=?', [userId], (err, attendees) => {
         res.send(attendees);
-    })
+    });
 });
 
 const PORT = 8080;

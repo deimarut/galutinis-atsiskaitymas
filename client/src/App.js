@@ -1,4 +1,3 @@
-import styled from 'styled-components';
 import { Attendees } from './pages/Attendees/Attendees';
 
 function App() {
