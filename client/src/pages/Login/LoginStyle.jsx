@@ -9,17 +9,14 @@ export const LoginTitle = styled.h1`
     background-image: linear-gradient(to right, rgb(199, 123, 205) , white);
 `;
 
-
 export const FormStyled = styled.form`
     background-color: white;
     border: 1px solid rgb(102, 0, 102);
     border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    justify-content: center;
     padding: 15px;
     font-family: Georgia, serif;
+    display:flex ;
+    flex-direction: column ;
 `;
 
 export const LoginContainer = styled.div`
@@ -38,4 +35,13 @@ export const LinkStyled = styled(Link)`
     :hover{
         color: rgb(255, 128, 191);
     } 
+`;
+
+export const FieldsetStyled = styled.fieldset`
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: center;
+    border: 0;
+    margin: 0;
 `;

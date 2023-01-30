@@ -8,6 +8,10 @@ const ButtonStyled = styled.button`
     border: 1px solid rgb(102, 0, 102);
     cursor: pointer;
     font-family: Georgia, serif;
+
+    &:disabled {
+        opacity: 0.5;
+    }
 `;
 
 export const Button = (props) => {
