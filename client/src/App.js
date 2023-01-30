@@ -5,7 +5,6 @@ import { Login } from './pages/Login/Login';
 import { useState } from 'react';
 import { Register } from './pages/Register/Register';
 
-
 function App() {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);

@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useEffect } from "react";
+import { Button } from "../../components/Button/Button";
+import { Input } from "../../components/Input/Input";
 import { LOGGED_IN_USER } from "../../constants/constants";
 import { AttendeesID, AttendeesList, AttendeesListItem } from "./style";
 
@@ -52,32 +54,32 @@ export const Attendees = () => {
     return (
         <AttendeesList>
             <form onSubmit={handleAttendeesAdd}>
-                <input 
+                <Input 
                     placeholder="Vardas" 
                     required 
                     onChange={(e) => setName(e.target.value)} 
                     value={name}
                 />
-                <input 
+                <Input 
                     placeholder="Pavardė" 
                     required 
                     onChange={(e) => setSurname(e.target.value)} 
                     value={surname}
                 />
-                <input 
+                <Input 
                     placeholder="Elektroninis paštas" 
                     type="email" 
                     required 
                     onChange={(e) => setEmail(e.target.value)}
                     value={email}
                 />
-                <input 
+                <Input 
                     placeholder="Telefono numeris 370..." 
                     required 
                     onChange={(e) => setPhone(e.target.value)}
                     value={phone}
                 />
-                <button>Pridėti į svečių sąrašą</button>
+                <Button >Pridėti į svečių sąrašą</Button>
             </form>
 
             {attendees.map((att) => (

@@ -1,5 +1,8 @@
 import { useState } from "react";
 import { Link, useNavigate } from 'react-router-dom';
+import { Button } from "../../components/Button/Button";
+import { Input } from "../../components/Input/Input";
+import { FormStyled, RegisterContainer, LinkStyled } from "./RegisterStyle";
 
 export const Register = () => {
     const navigate = useNavigate();
@@ -29,34 +32,35 @@ export const Register = () => {
     };
 
     return (
-        <>
-            <form onSubmit={handleRegister}>
-                <input 
-                    placeholder="El. paštas" 
-                    type="email"
-                    onChange={(e) => setEmail(e.target.value)}
-                    value={email}
-                />
-                <input 
-                    placeholder="Vardas"
-                    onChange={(e) => setName(e.target.value)}
-                    value={name}
-                />
-                <input 
-                    placeholder="Pavardė"
-                    onChange={(e) => setSurname(e.target.value)}
-                    value={surname}
-                />
-                <input 
-                    placeholder="Slaptažodis" 
-                    type="password" 
-                    onChange={(e) => setPassword(e.target.value)}
-                    value={password}
-                />
-                <button>Prisiregistruoti</button>
-            </form>
-            <Link to="/login">Jau turite paskyrą? Prisijunkite</Link>
-        </>
+        <RegisterContainer>
+            <FormStyled onSubmit={handleRegister}>
+                <h1>Registracija naujiems vartotojams</h1>
+                    <Input 
+                        placeholder="El. paštas" 
+                        type="email"
+                        onChange={(e) => setEmail(e.target.value)}
+                        value={email}
+                    />
+                    <Input 
+                        placeholder="Vardas"
+                        onChange={(e) => setName(e.target.value)}
+                        value={name}
+                    />
+                    <Input 
+                        placeholder="Pavardė"
+                        onChange={(e) => setSurname(e.target.value)}
+                        value={surname}
+                    />
+                    <Input 
+                        placeholder="Slaptažodis" 
+                        type="password" 
+                        onChange={(e) => setPassword(e.target.value)}
+                        value={password}
+                    />
+                <Button>Registruotis</Button>
+            <LinkStyled to="/login">Jau turite paskyrą? Prisijunkite</LinkStyled>
+            </FormStyled>
+        </RegisterContainer>
        
     )
 }
