@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 export const Login = ({onSuccess}) => {
     const [email, setEmail] = useState('');
@@ -26,20 +27,23 @@ export const Login = ({onSuccess}) => {
     }
 
     return (
-        <form onSubmit={handleLogin}>
-            <input 
-                placeholder="El. paštas"
-                type="email" 
-                onChange={(e) => setEmail(e.target.value)}
-                value={email} 
-            />
-            <input 
-                placeholder="Slaptažodis" 
-                type="password"
-                onChange={(e) => setPassword(e.target.value)}
-                value={password}
-            />
-            <button>Prisijungti</button>
-        </form>
+        <>
+            <form onSubmit={handleLogin}>
+                <input 
+                    placeholder="El. paštas"
+                    type="email" 
+                    onChange={(e) => setEmail(e.target.value)}
+                    value={email} 
+                />
+                <input 
+                    placeholder="Slaptažodis" 
+                    type="password"
+                    onChange={(e) => setPassword(e.target.value)}
+                    value={password}
+                />
+                <button>Prisijungti</button>
+            </form>
+            <Link to="/register">Registracijos forma</Link>
+        </>
     );
 }

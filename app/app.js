@@ -48,13 +48,12 @@ app.post('/attendees', (req, res) => {
 app.post('/register', (req, res) => {
     const { email, name, surname, password } = req.body;
     const hashedPassword = bcrypt.hashSync(password, 12);
-    bcrypt.compareSync();
 
     connection.execute(
         'INSERT INTO users (email, name, surname, password) VALUES (?, ?, ?, ?)', 
         [email, name, surname, hashedPassword], 
         (err, result) => {
-            res.sendStatus(200);
+            res.send(result);
         }
     )
 });
