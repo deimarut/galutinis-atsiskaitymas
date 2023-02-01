@@ -30,3 +30,8 @@ export const LinkStyled = styled(Link)`
         color: rgb(255, 128, 191);
     } 
 `;
+
+export const ErrorStyled = styled.div`
+    color: red;
+    text-align: center;
+`;

@@ -38,7 +38,7 @@ export const Attendees = () => {
                 surname, 
                 email, 
                 phone, 
-                userId: 1
+                userId: LOGGED_IN_USER.id
             })
         })
         .then((res) => res.json())

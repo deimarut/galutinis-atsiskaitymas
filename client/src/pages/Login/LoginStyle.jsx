@@ -45,3 +45,8 @@ export const FieldsetStyled = styled.fieldset`
     border: 0;
     margin: 0;
 `;
+
+export const ErrorStyled = styled.div`
+    color: red;
+    text-align: center;
+`;

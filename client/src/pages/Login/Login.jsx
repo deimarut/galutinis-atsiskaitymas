@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button } from "../../components/Button/Button";
 import { Input } from "../../components/Input/Input";
-import { FormStyled, LoginContainer, LinkStyled, LoginTitle, FieldsetStyled } from "./LoginStyle";
+import { FormStyled, LoginContainer, LinkStyled, LoginTitle, FieldsetStyled, ErrorStyled } from "./LoginStyle";
 
 export const Login = ({onSuccess}) => {
     const [email, setEmail] = useState('');
@@ -10,8 +10,9 @@ export const Login = ({onSuccess}) => {
     const [ isLoading, setIsLoading ] = useState(false);
 
     const handleLogin = (e) => {
-        e.preventDefault();
+        e.preventDefault(e);
         setIsLoading(true);
+
         fetch(`${process.env.REACT_APP_API_URL}/login`, {
             method: 'POST', 
             headers: {
@@ -23,18 +24,23 @@ export const Login = ({onSuccess}) => {
             })
         })
         .then((res) => {
-            if (res.status === 200) {
-                return res.json();
+            if (res.status === 401) {
+                throw new Error('Neteisingi prisijungimo duomenys');
             }
 
-            throw new Error('test error');
+            if (!res.ok) {
+                throw new Error('Kažkas negerai');
+            }
+
+            return res.json();
         })
         .then((data) => {
             onSuccess(data);
             setIsLoading(false);
+            setError('');
         })
         .catch((e) => {
-            setError(String(e));
+            setError(e.message);
             setIsLoading(false);
         })
     }
@@ -45,23 +51,21 @@ export const Login = ({onSuccess}) => {
             <LoginContainer>
                 <FormStyled onSubmit={handleLogin}>
                     <h2>Prisijunkite</h2>
-                        <FieldsetStyled disabled={isLoading}>
+                        <FieldsetStyled disabled={isLoading} column>
                             <Input 
                                 placeholder="El. paštas"
                                 type="email" 
                                 onChange={(e) => setEmail(e.target.value)}
-                                value={email} 
-                                disabled={isLoading}
+                                value={email}
                             />
                             <Input 
                                 placeholder="Slaptažodis" 
                                 type="password"
                                 onChange={(e) => setPassword(e.target.value)}
                                 value={password}
-                                disabled={isLoading}
                             />
-                            {error && <div>{error}</div>}
-                            <Button disabled={isLoading}>Prisijungti</Button>
+                            {error && <ErrorStyled>{error}</ErrorStyled>}
+                            <Button>Prisijungti</Button>
                         </FieldsetStyled>
                     <LinkStyled to="/register">Registracijos forma</LinkStyled>
                 </FormStyled>
