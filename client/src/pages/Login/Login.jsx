@@ -1,13 +1,17 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { Navigate, useNavigate } from "react-router";
 import { Button } from "../../components/Button/Button";
 import { Input } from "../../components/Input/Input";
+import { UserContext } from "../../contexts/UserContextWrapper";
 import { FormStyled, LoginContainer, LinkStyled, LoginTitle, FieldsetStyled, ErrorStyled } from "./LoginStyle";
 
-export const Login = ({onSuccess}) => {
+export const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [ isLoading, setIsLoading ] = useState(false);
+    const { setUser } = useContext(UserContext);
+    const navigate = useNavigate();
 
     const handleLogin = (e) => {
         e.preventDefault(e);
@@ -35,9 +39,10 @@ export const Login = ({onSuccess}) => {
             return res.json();
         })
         .then((data) => {
-            onSuccess(data);
+            setUser(data);
             setIsLoading(false);
             setError('');
+            navigate('/');
         })
         .catch((e) => {
             setError(e.message);
