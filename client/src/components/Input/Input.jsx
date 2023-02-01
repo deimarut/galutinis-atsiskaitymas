@@ -6,6 +6,8 @@ const InputStyled = styled.input`
     font-size: 18px;
     padding: 10px 20px;
     font-family: Georgia, serif;
+    margin-left: 10px ;
+    margin-right: 10px ;
 `;
 
 export const Input = ({ ...props }) => {

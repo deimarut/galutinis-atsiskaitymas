@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useEffect } from "react";
 import { Button } from "../../components/Button/Button";
 import { Input } from "../../components/Input/Input";
-import { LOGGED_IN_USER } from "../../constants/constants";
-import { AttendeesID, AttendeesList, AttendeesListItem } from "./style";
+import { UserContext } from "../../contexts/UserContextWrapper";
+import { AttendeesList, AttendeesListItem } from "./AttendeesStyle";
 
 export const Attendees = () => {
     const [attendees, setAttendees] = useState([]);
@@ -12,15 +12,16 @@ export const Attendees = () => {
     const [surname, setSurname] = useState('');
     const [email, setEmail] = useState(''); 
     const [phone, setPhone] = useState('');
+    const {user} = useContext(UserContext);
 
     useEffect(() => {
-        fetch(`${process.env.REACT_APP_API_URL}/attendees?userId=${LOGGED_IN_USER.id}`)
+        fetch(`${process.env.REACT_APP_API_URL}/attendees?userId=${user.id}`)
             .then(res => res.json())
             .then(data => {
                 setAttendees(data);
                 setIsLoading(false);
             });
-    }, []);
+    }, [user.id]);
 
     if (isLoading) {
         return <div>Loading...</div>;
@@ -38,7 +39,7 @@ export const Attendees = () => {
                 surname, 
                 email, 
                 phone, 
-                userId: LOGGED_IN_USER.id
+                userId: user.id
             })
         })
         .then((res) => res.json())
@@ -84,7 +85,6 @@ export const Attendees = () => {
 
             {attendees.map((att) => (
                 <AttendeesListItem key={att.id}>
-                    <AttendeesID>Eilės numeris: {att.id}</AttendeesID>
                         <span>Vardas: {att.name}</span>
                         <span>Pavardė: {att.surname}</span>
                         <span>El. paštas: {att.email}</span>
