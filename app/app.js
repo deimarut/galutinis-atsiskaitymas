@@ -2,6 +2,7 @@ const cors = require('cors');
 const express = require('express');
 const mysql = require('mysql2');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 require('dotenv').config();
 
@@ -20,19 +21,54 @@ const mysqlConfig = {
 
 const connection = mysql.createConnection(mysqlConfig);
 
-app.get('/attendees', (req, res) => {
-    const { userId } = req.query;
-    connection.execute('SELECT * FROM attendees WHERE userId=?', [userId], (err, attendees) => {
+const getUserFromToken = (req) => {
+    const token = req.headers.authorization.split(' ')[1];
+    const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
+    return user;
+}
+
+const verifyToken = (req, res, next) => {
+    try {
+        getUserFromToken(req);
+        next();
+    } catch(e) {
+        res.send({ error: 'Invalid Token' });
+    }
+}
+
+app.get('/attendees', verifyToken, (req, res) => {
+    const user = getUserFromToken(req);
+    connection.execute('SELECT * FROM attendees WHERE userId=?', [user.id], (err, attendees) => {
         res.send(attendees);
     });
 });
 
-app.post('/attendees', (req, res) => {
-    const {name, surname, email, phone, userId} = req.body;
+app.post('/attendees', verifyToken, (req, res) => {
+    const { name, surname, email, phone, userId } = req.body;
+    const { id } = getUserFromToken(req);
 
     connection.execute(
         'INSERT INTO attendees (name, surname, email, phone, userId) VALUES (?, ?, ?, ?, ?)', 
-        [name, surname, email, phone, userId],
+        [name, surname, email, phone, id],
+        () => {
+            connection.execute(
+                'SELECT * FROM attendees WHERE userId=?', 
+                [userId], 
+                (err, attendees) => {
+                    res.send(attendees);
+                }
+            )
+        }
+    )
+});
+
+app.delete('/attendees/:id', verifyToken, (req, res) => {
+    const { id } = req.params;
+    const { id: userId } = getUserFromToken(req);
+
+    connection.execute(
+        'DELETE FROM attendees WHERE id=? AND userId=?',
+        [id, userId],
         () => {
             connection.execute(
                 'SELECT * FROM attendees WHERE userId=?', 
@@ -75,13 +111,25 @@ app.post('/login', (req, res) => {
                 const passwordHash = result[0].password;
                 const isPasswordCorrect = bcrypt.compareSync(password, passwordHash);
                 if (isPasswordCorrect) {
-                    res.send(result[0]);
+                    const { id, name } = result[0];
+                    const token = jwt.sign({ id, name }, process.env.JWT_SECRET_KEY);
+                    res.send({ token, id, name });
                 } else {
                     res.sendStatus(401);
                 }
             }
         }
     );
+});
+
+app.get('/token/verify', (req, res) => {
+    try {
+        const token = req.headers.authorization.split(' ')[1];
+        const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
+        res.send(user);
+    } catch(e) {
+        res.send({ error: 'Invalid Token' });
+    }
 });
 
 const PORT = 8080;

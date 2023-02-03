@@ -4,6 +4,7 @@ import { Button } from "../../components/Button/Button";
 import { Input } from "../../components/Input/Input";
 import { UserContext } from "../../contexts/UserContextWrapper";
 import { FormStyled, LoginContainer, LinkStyled, LoginTitle, FieldsetStyled, ErrorStyled } from "./LoginStyle";
+import { LOCAL_STORAGE_JWT_TOKEN_KEY } from "../../constants/constants";
 
 export const Login = () => {
     const [email, setEmail] = useState('');
@@ -39,7 +40,9 @@ export const Login = () => {
             return res.json();
         })
         .then((data) => {
-            setUser(data);
+            const { id, email, token } = data;
+            localStorage.setItem(LOCAL_STORAGE_JWT_TOKEN_KEY, token);
+            setUser({ id, email });
             setIsLoading(false);
             setError('');
             navigate('/');

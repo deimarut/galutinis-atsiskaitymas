@@ -7,6 +7,24 @@ export const AttendeesList = styled.ul`
     list-style: none;
 `;
 
+export const HoverOverlay = styled.div`
+    background-color: rgba(248, 193, 248, 0.4);
+    content: '';
+    height: 100%;
+    left: 0;
+    position: absolute;
+    width: 100%;
+    display: flex ;
+    align-items: center ;
+    justify-content: flex-start ;
+`;
+
+export const HoverOverlayContent = styled.div`
+    color: red;
+    font-size: 16px;
+    font-weight: bold ;
+`;
+
 export const AttendeesListItem = styled.li`
     align-items: center;
     border-radius: 10px;
@@ -17,6 +35,17 @@ export const AttendeesListItem = styled.li`
     justify-content: space-evenly;
     overflow: hidden;
     padding: 30px 30px;
+    position: relative;
+
+    ${HoverOverlay} {
+        visibility: hidden;
+    }
+
+    &:hover {
+        ${HoverOverlay} {
+            visibility: visible;
+    }
+    }
 `;
 
 export const AttendeesID = styled.span`
