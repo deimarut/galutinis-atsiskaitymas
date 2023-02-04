@@ -19,10 +19,18 @@ export const HoverOverlay = styled.div`
     justify-content: flex-start ;
 `;
 
-export const HoverOverlayContent = styled.div`
+export const HoverDelete = styled.div`
     color: red;
     font-size: 16px;
-    font-weight: bold ;
+    font-weight: bold;
+    margin-left: 10px;
+`;
+
+export const HoverEdit = styled.div`
+    color: red;
+    font-size: 16px;
+    font-weight: bold;
+    margin-left: 10px;
 `;
 
 export const AttendeesListItem = styled.li`

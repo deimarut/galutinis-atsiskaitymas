@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { Button } from "../../components/Button/Button";
 import { Input } from "../../components/Input/Input";
 import { UserContext } from "../../contexts/UserContextWrapper";
-import { AttendeesList, AttendeesListItem, HoverOverlay, HoverOverlayContent } from "./AttendeesStyle";
+import { AttendeesList, AttendeesListItem, HoverOverlay, HoverDelete, HoverEdit } from "./AttendeesStyle";
 import {DateTime} from 'luxon';
 import { LOCAL_STORAGE_JWT_TOKEN_KEY } from "../../constants/constants";
 
@@ -78,6 +78,26 @@ export const Attendees = () => {
         }
     }
 
+    const handleEditItem = (id) => {
+        fetch(`${process.env.REACT_APP_API_URL}/attendees/${id}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                authorization: 'Bearer ' + localStorage.getItem(LOCAL_STORAGE_JWT_TOKEN_KEY)
+            }
+        })
+        .then((res) => res.json())
+        .then((data) => {
+            if (!data.error) {
+                setAttendees(data);
+                setName('');
+                setSurname('');
+                setEmail('');
+                setPhone('');
+            }
+        });
+    }
+
     return (
         <AttendeesList>
             <form onSubmit={handleAttendeesAdd}>
@@ -110,10 +130,13 @@ export const Attendees = () => {
             </form>
 
             {attendees.map((att) => (
-                <AttendeesListItem key={att.id} onClick={() => handleDeleteItem(att.id)}>
+                <AttendeesListItem key={att.id} >
+
                     <HoverOverlay>
-                        <HoverOverlayContent>NAIKINTI</HoverOverlayContent>
+                        <HoverDelete onClick={() => handleDeleteItem(att.id)}>NAIKINTI</HoverDelete>
+                        <HoverEdit onClick={() => handleEditItem(att.id)}>REDAGUOTI</HoverEdit>
                     </HoverOverlay>
+
                         <span>Vardas: {att.name}</span>
                         <span>Pavardė: {att.surname}</span>
                         <span>El. paštas: {att.email}</span>

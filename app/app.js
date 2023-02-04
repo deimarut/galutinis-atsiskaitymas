@@ -81,6 +81,20 @@ app.delete('/attendees/:id', verifyToken, (req, res) => {
     )
 });
 
+app.patch('/attendees/:id', (req, res) => {
+    const { name, surname, email, phone} = req.body;
+
+    connection.execute(
+      'UPDATE attendees SET name=?, surname=?, email=?, phone=? WHERE id=?', 
+      [name, surname, email, phone, req.params.id],
+      () => {
+        connection.execute('SELECT * FROM attendees', (err, attendees) => {
+          res.send(attendees);
+        })
+      }
+    )
+  });
+
 app.post('/register', (req, res) => {
     const { email, name, surname, password } = req.body;
     const hashedPassword = bcrypt.hashSync(password, 12);
@@ -120,16 +134,6 @@ app.post('/login', (req, res) => {
             }
         }
     );
-});
-
-app.get('/token/verify', (req, res) => {
-    try {
-        const token = req.headers.authorization.split(' ')[1];
-        const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
-        res.send(user);
-    } catch(e) {
-        res.send({ error: 'Invalid Token' });
-    }
 });
 
 const PORT = 8080;
