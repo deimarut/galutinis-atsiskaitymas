@@ -3,8 +3,8 @@ import { useEffect } from "react";
 import { Button } from "../../components/Button/Button";
 import { Input } from "../../components/Input/Input";
 import { UserContext } from "../../contexts/UserContextWrapper";
-import { AttendeesList, AttendeesListItem, HoverOverlay, HoverDelete, HoverEdit } from "./AttendeesStyle";
-import {DateTime} from 'luxon';
+import { AttendeesList, AttendeesListItem, HoverOverlay, HoverDelete } from "./AttendeesStyle";
+import { DateTime } from 'luxon';
 import { LOCAL_STORAGE_JWT_TOKEN_KEY } from "../../constants/constants";
 
 export const Attendees = () => {
